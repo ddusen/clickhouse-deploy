@@ -43,18 +43,8 @@ cd /home/clickhouse/clickhouse-ansible && \
 cd /home/clickhouse/clickhouse-ansible && \
 vi hosts.ini
 ```
-
-- Examples:
-```ini
-[servers]
-172.30.7.189
-172.30.7.190
-172.30.7.191
-
-[all:vars]
-username = clickhouse
-ntp_server = pool.ntp.org
-```
+> Example:
+>> [hosts.ini](./hosts.in)
 
 - 执行以下命令，按提示输入部署目标机器的 root 用户密码(iKp****tM4d)
 ```bash
@@ -95,53 +85,8 @@ ansible -i hosts.ini all -m shell -a 'echo "/dev/vdb1 /data1 ext4 defaults 0 0" 
 |sharding3|172.30.7.191|172.30.7.189|
 
 
-```ini
-## clickhouse Cluster Part
-[clickhouse_servers]
-172.30.7.189
-172.30.7.190
-172.30.7.191
-
-[clickhouse_replica_servers]
-172.30.7.189
-172.30.7.190
-172.30.7.191
-
-[clickhouse_clients]
-172.30.7.189
-
-## Monitoring Part
-# prometheus and pushgateway servers
-[monitoring_servers]
-
-[grafana_servers]
-
-# node_exporter and blackbox_exporter servers
-[monitored_servers]
-
-## Global variables
-[all:vars]
-## Connection
-# ssh via normal user
-ansible_user = clickhouse
-
-cluster_name = clickhouse-cluster
-
-# CPU architecture: amd64, arm64
-cpu_architecture = amd64
-
-clickhouse_version = 20.8.7.15
-
-# process supervision, [systemd, supervise]
-process_supervision = systemd
-
-timezone = Asia/Shanghai
-
-enable_firewalld = False
-# check NTP service
-enable_ntpd = True
-set_hostname = False
-```
+> Example:
+>> [inventory.ini](./inventory.in)
 
 ### 第 8 步：部署 ClickHouse 集群
 
