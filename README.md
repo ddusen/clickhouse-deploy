@@ -44,7 +44,7 @@ cd /home/clickhouse/clickhouse-ansible && \
 vi hosts.ini
 ```
 > Example:
->> [hosts.ini](./hosts.in)
+>> [hosts.ini](./hosts.ini)
 
 - 执行以下命令，按提示输入部署目标机器的 root 用户密码(iKp****tM4d)
 ```bash
@@ -86,7 +86,7 @@ ansible -i hosts.ini all -m shell -a 'echo "/dev/vdb1 /data1 ext4 defaults 0 0" 
 
 
 > Example:
->> [inventory.ini](./inventory.in)
+>> [inventory.ini](./inventory.ini)
 
 ### 第 8 步：部署 ClickHouse 集群
 
