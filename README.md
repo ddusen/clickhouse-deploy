@@ -56,7 +56,7 @@ username = clickhouse
 ntp_server = pool.ntp.org
 ```
 
-- 执行以下命令，按提示输入部署目标机器的 root 用户密码(iNag****deNDa)
+- 执行以下命令，按提示输入部署目标机器的 root 用户密码(iKp****tM4d)
 ```bash
 ansible-playbook -i hosts.ini create_users.yml -u root -k 
 ```
