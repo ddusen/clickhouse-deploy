@@ -1,16 +1,5 @@
 ---
 
-- name: upgrade dnf
-  shell: |
-    dnf clean all
-    rm -rf /var/cache/dnf
-    dnf -y upgrade
-    ln -s /usr/bin/python3 /usr/bin/python
-  args:
-    warn: false
-  ignore_errors: yes 
-  sudo: yes
-  
 - name: setting absent kernel params
   sysctl:
     name: "{{ item.name }}"
