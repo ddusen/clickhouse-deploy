@@ -15,7 +15,7 @@
     - ansible_memtotal_mb < clickhouse_min_mem_size|int
 
 - name: Set deploy_dir if not presented
-  set_fact: deploy_dir="/data1/clickhouse"
+  set_fact: deploy_dir="/data/clickhouse"
   when: deploy_dir is not defined
 
 - name: Determine which mountpoint deploy dir exists on
