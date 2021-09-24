@@ -7,12 +7,12 @@ clickhouse_ihttp_port: 9009
 
 clickhouse_host: "0.0.0.0"
 
-clickhouse_root_dir: "/data1"
+clickhouse_root_dir: "/data"
 clickhouse_data_dir: "/data/clickhouse"
 
 clickhouse_log_dir: "/data/clickhouse/log"
 clickhouse_log_size: "100M"
-clickhouse_log_count: "20"
+clickhouse_log_count: "10"
 
 # 16GB * 1024
 clickhouse_max_mem_size: 16384

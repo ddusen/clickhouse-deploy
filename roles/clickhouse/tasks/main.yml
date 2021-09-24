@@ -21,21 +21,25 @@
       - clickhouse-client
       - clickhouse*
     state: absent
+  become: true
 
 - name: Install ClickHouse Common package.
   shell: rpm -ivh "{{ clickhouse_root_dir }}/{{ clickhouse_common_pkg }}"
   args:
     warn: false
+  become: true
 
 - name: Install ClickHouse Server package.
   shell: rpm -ivh "{{ clickhouse_root_dir }}/{{ clickhouse_server_pkg }}"
   args:
     warn: false
+  become: true
 
 - name: Install ClickHouse Client package.
   shell: rpm -ivh "{{ clickhouse_root_dir }}/{{ clickhouse_client_pkg }}"
   args:
     warn: false
+  become: true
 
 - name: Create ClickHouse directory
   file:
