@@ -28,12 +28,12 @@
   when:
     - "'clickhouse_servers' in group_names"
     - item.mount == deploy_partition.stdout
-    - item.size_available < clickhouse_min_disk|int
+    - item.size_available < clickhouse_min_disk_size|int
   with_items: "{{ ansible_mounts }}"
 
 - name: Preflight check - Check ClickHouse server's disk space
   debug:
-    msg: 'The file system mounted at {{ deploy_partition.stdout }} does not meet minimum disk space requirement: at least {{ clickhouse_min_disk/1000000000 }} GB.'
+    msg: 'The file system mounted at {{ deploy_partition.stdout }} does not meet minimum disk space requirement: at least {{ clickhouse_min_disk_size/1000000000 }} GB.'
   when:
     - clickhouse_disk_alert is defined
     - clickhouse_disk_alert

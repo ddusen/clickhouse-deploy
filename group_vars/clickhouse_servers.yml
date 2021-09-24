@@ -21,3 +21,5 @@ clickhouse_max_core_size: 8
 # 2GB * 1024
 clickhouse_min_mem_size: 2048
 clickhouse_min_core_size: 1
+# 20GB * 1024 * 1024 * 1024
+clickhouse_min_disk_size: 21474836480
