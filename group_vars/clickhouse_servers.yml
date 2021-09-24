@@ -14,10 +14,10 @@ clickhouse_log_dir: "/data1/clickhouse/log"
 clickhouse_log_size: "100M"
 clickhouse_log_count: "20"
 
-# 28GB * 1024 * 1024 * 1024
-clickhouse_max_mem_size: 30064771072
+# 16GB * 1024
+clickhouse_max_mem_size: 16384
 clickhouse_max_core_size: 8
 
-# 2GB * 1024 * 1024 * 1024
-clickhouse_min_mem_size: 2147483648
+# 2GB * 1024
+clickhouse_min_mem_size: 2048
 clickhouse_min_core_size: 1
