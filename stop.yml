@@ -47,13 +47,6 @@
         state: stopped
         msg: "the ClickHouse port {{ clickhouse_tcp_port }} is not down"
 
-    - name: wait until the ClickHouse mysql port is down
-      wait_for:
-        host: "{{ ansible_host }}"
-        port: "{{ clickhouse_mysql_port }}"
-        state: stopped
-        msg: "the ClickHouse port {{ clickhouse_mysql_port }} is not down"
-
     - name: wait until the ClickHouse interserver http port is down
       wait_for:
         host: "{{ ansible_host }}"

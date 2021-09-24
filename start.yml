@@ -42,14 +42,6 @@
         timeout: 3
         msg: "{{ clickhouse_tcp_port }} already in use"
 
-    - name: Check if clickhouse mysql port already in use
-      wait_for:
-        host: "{{ ansible_host }}"
-        port: "{{ clickhouse_mysql_port }}"
-        state: stopped
-        timeout: 3
-        msg: "{{ clickhouse_mysql_port }} already in use"
-
     - name: Check if clickhouse interserver http port already in use
       wait_for:
         host: "{{ ansible_host }}"
@@ -78,14 +70,7 @@
         port: "{{ clickhouse_tcp_port }}"
         state: started
         msg: "the ClickHouse port {{ clickhouse_tcp_port }} is not up"
-
-    - name: wait until the ClickHouse mysql port is up
-      wait_for:
-        host: "{{ ansible_host }}"
-        port: "{{ clickhouse_mysql_port }}"
-        state: started
-        msg: "the ClickHouse port {{ clickhouse_mysql_port }} is not up"
-
+        
     - name: wait until the ClickHouse interserver http port is up
       wait_for:
         host: "{{ ansible_host }}"
