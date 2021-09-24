@@ -38,7 +38,7 @@
       shell: |
         bash -c 'rm -rf /etc/init.d/{{ clickhouse_server_name }}'
         bash -c 'rm -rf /etc/cron.d/{{ clickhouse_server_name }}'
-        bash -c 'rm -rf /etc/{{ clickhouse_replica_server_name }}'
+        bash -c 'rm -rf /etc/{{ clickhouse_server_name }}'
         bash -c 'rm -rf {{ clickhouse_data_dir }}'
       args:
         warn: false

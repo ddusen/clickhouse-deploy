@@ -5,10 +5,6 @@
   fail: msg="clickhouse_servers should be specified."
   when: groups['clickhouse_servers'] | length < 1
 
-- name: Ensure clickhouse_replica_servers exists
-  fail: msg="clickhouse_replica_servers should be specified."
-  when: groups['clickhouse_replica_servers'] | length < 1
-
 - name: Ensure clickhouse_clients exists
   fail: msg="clickhouse_clients should be specified."
   when: groups['clickhouse_clients'] | length < 1
