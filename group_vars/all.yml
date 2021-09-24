@@ -8,21 +8,34 @@ images_dir: "{{ deploy_dir }}/images"
 # Local
 downloads_dir: "{{ playbook_dir }}/downloads"
 script_dir:    "{{ playbook_dir }}/scripts"
-binary_dir:    "{{ playbook_dir }}/resources/bin"
-
-# docker
-docker_bin_dir: "/usr/bin"
 
 # Random shifts for retrying failed ops like downloading
 retry_stagger: 5
 
-# deployment methods, [binary, docker] docker deployment method is not recommended and deprecated.
-deployment_method: binary
+# ClickHouse Server
+clickhouse_server_name: "clickhouse-server"
+clickhouse_http_port: 8123
+clickhouse_tcp_port: 9000
+clickhouse_ihttp_port: 9009
 
-enable_log_clean: False
-log_retain_days: 28
+clickhouse_host: "0.0.0.0"
 
-dev_mode: False
+clickhouse_root_dir: "/data"
+clickhouse_data_dir: "/data/clickhouse"
 
-# systemd: Specifies whether to send SIGKILL to remaining processes after a timeout.
-disable_send_sigkill: False
+clickhouse_log_dir: "/data/clickhouse/log"
+clickhouse_log_size: "100M"
+clickhouse_log_count: "10"
+
+# 16GB * 1024 * 1024 * 1024
+clickhouse_max_mem_size: 8589934592
+clickhouse_max_core_size: 8
+
+# 2GB * 1024
+clickhouse_min_mem_size: 2048
+clickhouse_min_core_size: 1
+# 20GB * 1024 * 1024 * 1024
+clickhouse_min_disk_size: 21474836480
+
+clickhouse_default_password: "rwdiKp****tM4d"
+clickhouse_default_password_sha1: "0a28226f841fc055d52c4f71139b4a9556fcd5d8"
