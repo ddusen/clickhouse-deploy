@@ -1,0 +1,70 @@
+---
+# Author: dusen.me@gmail.com
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# The playbook of ClickHouse
+
+- hosts: localhost
+  tasks:
+    - name: confirm operation
+      pause:
+        prompt: "The operation will clear the cluster and the data will be deleted (Ctrl-c C or enter to continue, Ctrl-c A to Abort)"
+
+- import_playbook: stop.yml
+
+- hosts: clickhouse_servers
+  tasks:
+    - name: Remove ClickHouse package.
+      yum:
+        name: 
+          - clickhouse-common-static
+          - clickhouse-common
+          - "{{ clickhouse_server_name }}"
+          - clickhouse-client
+        state: absent
+      become: true
+
+    - name: Remove ClickHouse config/shell/data.
+      shell: |
+        bash -c 'rm -rf /etc/init.d/{{ clickhouse_server_name }}'
+        bash -c 'rm -rf /etc/cron.d/{{ clickhouse_server_name }}'
+        bash -c 'rm -rf /etc/{{ clickhouse_replica_server_name }}'
+        bash -c 'rm -rf {{ clickhouse_data_dir }}'
+      args:
+        warn: false
+      ignore_errors: yes 
+      become: true
+
+
+- hosts: clickhouse_replica_servers
+  tasks:
+    - name: Remove ClickHouse Replica package.
+      yum:
+        name: 
+          - clickhouse-common-static
+          - clickhouse-common
+          - "{{ clickhouse_replica_server_name }}"
+          - clickhouse-client
+        state: absent
+      become: true
+
+    - name: Remove ClickHouse Replica config/shell/data.
+      shell: |
+        bash -c 'rm -rf /etc/init.d/{{ clickhouse_replica_server_name }}'
+        bash -c 'rm -rf /etc/cron.d/{{ clickhouse_replica_server_name }}'
+        bash -c 'rm -rf /etc/{{ clickhouse_replica_server_name }}'
+        bash -c 'rm -rf {{ clickhouse_replica_data_dir }}'
+      args:
+        warn: false
+      ignore_errors: yes 
+      become: true

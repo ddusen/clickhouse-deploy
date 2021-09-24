@@ -1,0 +1,17 @@
+---
+
+clickhouse_common_uri:
+  - name: clickhouse_common
+    version: 20.8.7.15
+    url: https://repo.yandex.ru/clickhouse/rpm/stable/x86_64/clickhouse-common-static-20.8.7.15-2.x86_64.rpm 
+
+clickhouse_server_uri:
+  - name: clickhouse_server
+    version: 20.8.7.15
+    url: https://repo.yandex.ru/clickhouse/rpm/stable/x86_64/clickhouse-server-20.8.7.15-2.noarch.rpm 
+
+clickhouse_client_uri:
+  - name: clickhouse_client
+    version: 20.8.7.15
+    url: https://repo.yandex.ru/clickhouse/rpm/stable/x86_64/clickhouse-client-20.8.7.15-2.noarch.rpm 
+

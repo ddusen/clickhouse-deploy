@@ -1,0 +1,67 @@
+---
+# Common Tasks
+
+- name: Ensure clickhouse_servers exists
+  fail: msg="clickhouse_servers should be specified."
+  when: groups['clickhouse_servers'] | length < 1
+
+- name: Ensure clickhouse_replica_servers exists
+  fail: msg="clickhouse_replica_servers should be specified."
+  when: groups['clickhouse_replica_servers'] | length < 1
+
+- name: Ensure clickhouse_clients exists
+  fail: msg="clickhouse_clients should be specified."
+  when: groups['clickhouse_clients'] | length < 1
+
+- name: Check ansible_user variable
+  fail: msg="ansible_user == 'root' is not supported, please ssh via normal user"
+  when: ansible_user == 'root'
+
+- name: Ensure timezone variable is set
+  fail: msg="Please set timezone variable in inventory.ini."
+  when: (timezone is undefined) or (timezone is defined and timezone == "")
+
+- name: Close old SSH control master processes
+  shell: pkill -f "ssh.*ansible.*"
+  ignore_errors: true
+  changed_when: false
+  failed_when: false
+
+- name: Check ansible version
+  fail:
+    msg: "Stop if ansible version is too low, make sure that the Ansible version is 2.4.2 or later, otherwise a compatibility issue occurs. Current ansible version is {{ ansible_version.full }}"
+  when: ansible_version.full | version_compare('2.4.2', '<')
+
+- name: Check if jmespath installed
+  shell: pip list | grep -iw jmespath | wc -l
+  register: jmespath_exist
+
+- name: Check if jinja2 installed
+  shell: pip list | grep -iw jinja2 | wc -l
+  register: jinja2_exist
+
+- name: Preflight check - Fail when jmespath or jinja2 isn't installed
+  fail:
+    msg: "Jmespath or Jinja2 does not exist, Please run `pip install -r requirements.txt` to install."
+  when: jmespath_exist.stdout | int == 0 or jinja2_exist.stdout | int == 0
+
+- name: Get jmespath info
+  shell: pip show jmespath | grep Version |grep -v Metadata-Version
+  register: jmespath
+
+- name: Get jmespath version
+  set_fact:
+    jmespath_version: "{{ jmespath.stdout_lines[0] | replace('Version: ', '') }}"
+
+- name: Get jinja2 info
+  shell: pip show jinja2 | grep Version |grep -v Metadata-Version
+  register: jinja2
+
+- name: Get jinja2 version
+  set_fact:
+    jinja2_version: "{{ jinja2.stdout_lines[0] | replace('Version: ', '') }}"
+
+- name: Preflight check - Fail when the versions of jmespath and jinja2 doesn't meet the requirements
+  fail:
+    msg: "Jmespath({{ jmespath_version }}) or jinja2({{ jinja2_version }}) version is too low, Please run `pip install --upgrade -r requirements.txt` to upgrade."
+  when: jmespath_version | version_compare('0.9.0', '<') or jinja2_version | version_compare('2.9.6', '<')

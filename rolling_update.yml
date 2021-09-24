@@ -1,0 +1,151 @@
+---
+# Author: dusen.me@gmail.com
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# The playbook of ClickHouse
+
+- name: check config locally
+  hosts: localhost
+  any_errors_fatal: true
+  tags:
+    - always
+  roles:
+    - check_config_static
+
+- hosts: clickhouse_servers
+  tags:
+    - clickhouse
+  tasks:
+    - name: Update ClickHouse configuration file.
+      template: src="roles/clickhouse/templates/config.xml.j2" dest="/etc/{{ clickhouse_server_name }}/config.xml" mode=0644
+      become: true
+      become_user: root
+
+    - name: Update ClickHouse users file.
+      template: src="roles/clickhouse/templates/users.xml.j2" dest="/etc/{{ clickhouse_server_name }}/users.xml" mode=0644
+      become: true
+      become_user: root
+
+    - name: Update ClickHouse metrika file.
+      template: src="roles/clickhouse/templates/metrika.xml.j2" dest="/etc/{{ clickhouse_server_name }}/metrika.xml" mode=0644
+      become: true
+      become_user: root
+      
+    - name: restart ClickHouse by init.d
+      shell: /etc/init.d/{{ clickhouse_server_name }} restart
+      args:
+        warn: false
+      become: true
+      become_user: root
+
+    - name: wait until the ClickHouse http port is up
+      wait_for:
+        host: "{{ ansible_host }}"
+        port: "{{ clickhouse_http_port }}"
+        state: started
+        msg: "the ClickHouse port {{ clickhouse_http_port }} is not up"
+
+    - name: wait until the ClickHouse tcp port is up
+      wait_for:
+        host: "{{ ansible_host }}"
+        port: "{{ clickhouse_tcp_port }}"
+        state: started
+        msg: "the ClickHouse port {{ clickhouse_tcp_port }} is not up"
+
+    - name: wait until the ClickHouse mysql port is up
+      wait_for:
+        host: "{{ ansible_host }}"
+        port: "{{ clickhouse_mysql_port }}"
+        state: started
+        msg: "the ClickHouse port {{ clickhouse_mysql_port }} is not up"
+
+    - name: wait until the ClickHouse interserver http port is up
+      wait_for:
+        host: "{{ ansible_host }}"
+        port: "{{ clickhouse_ihttp_port }}"
+        state: started
+        msg: "the ClickHouse port {{ clickhouse_ihttp_port }} is not up"
+
+    - name: wait until the ClickHouse status is OK
+      uri:
+        url: "http://{{ ansible_host }}:{{ clickhouse_http_port }}/"
+        return_content: yes
+      register: clickhouse_http_result
+      until: clickhouse_http_result.status == 200 and 'Ok' in clickhouse_http_result.content
+      retries: 12
+      delay: 5
+      when: not enable_tls|default(false)
+
+- hosts: clickhouse_replica_servers
+  tags:
+    - clickhouse_replica
+  tasks:
+    - name: Update ClickHouse configuration file.
+      template: src="roles/clickhouse_replica/templates/config.xml.j2" dest="/etc/{{ clickhouse_replica_server_name }}/config.xml" mode=0644
+      become: true
+      become_user: root
+
+    - name: Update ClickHouse users file.
+      template: src="roles/clickhouse_replica/templates/users.xml.j2" dest="/etc/{{ clickhouse_replica_server_name }}/users.xml" mode=0644
+      become: true
+      become_user: root
+
+    - name: Update ClickHouse metrika file.
+      template: src="roles/clickhouse_replica/templates/metrika.xml.j2" dest="/etc/{{ clickhouse_replica_server_name }}/metrika.xml" mode=0644
+      become: true
+      become_user: root
+      
+    - name: restart ClickHouse by init.d
+      shell: /etc/init.d/{{ clickhouse_replica_server_name }} restart
+      args:
+        warn: false
+      become: true
+      become_user: root
+
+    - name: wait until the ClickHouse http port is up
+      wait_for:
+        host: "{{ ansible_host }}"
+        port: "{{ clickhouse_replica_http_port }}"
+        state: started
+        msg: "the ClickHouse port {{ clickhouse_replica_http_port }} is not up"
+
+    - name: wait until the ClickHouse tcp port is up
+      wait_for:
+        host: "{{ ansible_host }}"
+        port: "{{ clickhouse_replica_tcp_port }}"
+        state: started
+        msg: "the ClickHouse port {{ clickhouse_replica_tcp_port }} is not up"
+
+    - name: wait until the ClickHouse mysql port is up
+      wait_for:
+        host: "{{ ansible_host }}"
+        port: "{{ clickhouse_replica_mysql_port }}"
+        state: started
+        msg: "the ClickHouse port {{ clickhouse_replica_mysql_port }} is not up"
+
+    - name: wait until the ClickHouse interserver http port is up
+      wait_for:
+        host: "{{ ansible_host }}"
+        port: "{{ clickhouse_replica_ihttp_port }}"
+        state: started
+        msg: "the ClickHouse port {{ clickhouse_replica_ihttp_port }} is not up"
+
+    - name: wait until the ClickHouse status is OK
+      uri:
+        url: "http://{{ ansible_host }}:{{ clickhouse_replica_http_port }}/"
+        return_content: yes
+      register: clickhouse_replica_http_result
+      until: clickhouse_replica_http_result.status == 200 and 'Ok' in clickhouse_replica_http_result.content
+      retries: 12
+      delay: 5
+      when: not enable_tls|default(false)

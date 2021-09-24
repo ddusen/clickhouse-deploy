@@ -1,0 +1,20 @@
+---
+
+- name: Disk space check - Fail task when disk is full
+  shell: df -h . | tail -n1
+  register: disk_space_st
+  failed_when: " '100%' in disk_space_st.stdout "
+  changed_when: false
+
+- name: get facts
+  setup:
+    gather_subset: hardware
+    gather_timeout: 30
+
+- name: Preflight check - Linux OS family and distribution version
+  fail:
+    msg: "System versions lower than Red Hat Enterprise Linux / CentOS 7.3 have been deprecated. Please use CentOS 7.3 and above. "
+  when:
+    - ansible_os_family == 'RedHat'
+    - ansible_distribution in ['CentOS', 'RedHat']
+    - ansible_distribution_major_version < '7'

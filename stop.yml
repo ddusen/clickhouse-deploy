@@ -1,0 +1,101 @@
+---
+# Author: dusen.me@gmail.com
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# The playbook of ClickHouse
+
+- name: check config locally
+  hosts: localhost
+  any_errors_fatal: true
+  tags:
+    - always
+  roles:
+    - check_config_static
+
+- hosts: clickhouse_servers
+  tags:
+    - clickhouse
+  tasks:
+    - name: stop ClickHouse by init.d
+      shell: /etc/init.d/{{ clickhouse_server_name }} stop
+      args:
+        warn: false
+      become: true
+      become_user: root
+
+    - name: wait until the ClickHouse http port is down
+      wait_for:
+        host: "{{ ansible_host }}"
+        port: "{{ clickhouse_http_port }}"
+        state: stopped
+        msg: "the ClickHouse port {{ clickhouse_http_port }} is not down"
+
+    - name: wait until the ClickHouse tcp port is down
+      wait_for:
+        host: "{{ ansible_host }}"
+        port: "{{ clickhouse_tcp_port }}"
+        state: stopped
+        msg: "the ClickHouse port {{ clickhouse_tcp_port }} is not down"
+
+    - name: wait until the ClickHouse mysql port is down
+      wait_for:
+        host: "{{ ansible_host }}"
+        port: "{{ clickhouse_mysql_port }}"
+        state: stopped
+        msg: "the ClickHouse port {{ clickhouse_mysql_port }} is not down"
+
+    - name: wait until the ClickHouse interserver http port is down
+      wait_for:
+        host: "{{ ansible_host }}"
+        port: "{{ clickhouse_ihttp_port }}"
+        state: stopped
+        msg: "the ClickHouse port {{ clickhouse_ihttp_port }} is not down"
+
+- hosts: clickhouse_replica_servers
+  tags:
+    - clickhouse_replica
+  tasks:
+    - name: stop ClickHouse Replica by init.d
+      shell: /etc/init.d/{{ clickhouse_replica_server_name }} stop
+      args:
+        warn: false
+      become: true
+      become_user: root
+
+    - name: wait until the ClickHouse Replica http port is down
+      wait_for:
+        host: "{{ ansible_host }}"
+        port: "{{ clickhouse_replica_http_port }}"
+        state: stopped
+        msg: "the ClickHouse Replica port {{ clickhouse_replica_http_port }} is not down"
+
+    - name: wait until the ClickHouse Replica tcp port is down
+      wait_for:
+        host: "{{ ansible_host }}"
+        port: "{{ clickhouse_replica_tcp_port }}"
+        state: stopped
+        msg: "the ClickHouse Replica port {{ clickhouse_replica_tcp_port }} is not down"
+
+    - name: wait until the ClickHouse Replica mysql port is down
+      wait_for:
+        host: "{{ ansible_host }}"
+        port: "{{ clickhouse_replica_mysql_port }}"
+        state: stopped
+        msg: "the ClickHouse Replica port {{ clickhouse_replica_mysql_port }} is not down"
+
+    - name: wait until the ClickHouse Replica interserver http port is down
+      wait_for:
+        host: "{{ ansible_host }}"
+        port: "{{ clickhouse_replica_ihttp_port }}"
+        state: stopped
+        msg: "the ClickHouse Replica port {{ clickhouse_replica_ihttp_port }} is not down"

@@ -1,0 +1,19 @@
+---
+clickhouse_replica_server_name: "clickhouse-server-replica"
+clickhouse_replica_http_port: 9123
+clickhouse_replica_tcp_port: 9100
+clickhouse_replica_mysql_port: 9104
+clickhouse_replica_ihttp_port: 9109
+
+clickhouse_replica_host: "0.0.0.0"
+
+clickhouse_replica_root_dir: "/data2"
+clickhouse_replica_data_dir: "/data2/clickhouse"
+
+clickhouse_replica_log_dir: "/data2/clickhouse/log"
+clickhouse_replica_log_size: "100M"
+clickhouse_replica_log_count: "20"
+
+# 28GB * 1024 * 1024 * 1024
+clickhouse_replica_max_mem_size: 30064771072
+clickhouse_replica_max_core_size: 8

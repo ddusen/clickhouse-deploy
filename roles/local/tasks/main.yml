@@ -1,0 +1,89 @@
+---
+
+- name: Stop if ansible version is too low, make sure that the Ansible version is Ansible 2.4.2 or later, otherwise a compatibility issue occurs.
+  assert:
+    that:
+      - ansible_version.full|version_compare('2.4.2', '>=')
+      # - ansible_version.full is version('2.5.0', '>=')
+
+- name: create downloads directories
+  file: path="{{ item }}" state=directory mode=0755
+  with_items:
+  - "{{ downloads_dir }}"
+
+- name: create cert directory
+  file: path="{{ cert_dir }}" state=directory mode=0755
+  when: enable_tls|default(false)
+
+- name: create packages.yml
+  template: src=packages.yml.j2 dest={{ playbook_dir }}/conf/packages.yml
+
+- include_vars: file={{ playbook_dir }}/conf/packages.yml
+
+# preflight checks
+- name: detect outbound network[1]
+  shell: >
+    warn=no
+    curl -s --connect-timeout 10 www.baidu.com 2>/dev/null >/dev/null; echo $?
+  changed_when: false
+  register: outbound_network_st
+
+- name: set outbound network fact[1]
+  set_fact: has_outbound_network={{ outbound_network_st.stdout.strip() == '0' }}
+
+- fail:
+    msg: "The Control Machine must have access to the Internet in order to download ClickHouse and related packages."
+  when: not has_outbound_network
+
+- name: detect outbound network[2]
+  shell: >
+    warn=no
+    curl -s --connect-timeout 10 google.com 2>/dev/null >/dev/null; echo $?
+  changed_when: false
+  register: outbound_st
+
+- name: set outbound network fact[2]
+  set_fact: under_outbound={{ outbound_st.stdout.strip() != '0' }}
+
+# do actual downloading
+- name: download clickhouse common
+  get_url:
+    url: "{{ item.url }}"
+    dest: "{{ downloads_dir }}/{{ item.name }}-{{ item.version }}.rpm"
+    checksum: "{{ item.checksum | default(omit) }}"
+    force: yes
+    validate_certs: no
+  register: get_url_result
+  until: "'OK' in get_url_result.msg or 'file already exists' in get_url_result.msg"
+  retries: 4
+  delay: "{{ retry_stagger | random + 3 }}"
+  with_items: "{{ clickhouse_common_uri }}"
+  when: has_outbound_network
+
+- name: download clickhouse server
+  get_url:
+    url: "{{ item.url }}"
+    dest: "{{ downloads_dir }}/{{ item.name }}-{{ item.version }}.rpm"
+    checksum: "{{ item.checksum | default(omit) }}"
+    force: yes
+    validate_certs: no
+  register: get_url_result
+  until: "'OK' in get_url_result.msg or 'file already exists' in get_url_result.msg"
+  retries: 4
+  delay: "{{ retry_stagger | random + 3 }}"
+  with_items: "{{ clickhouse_server_uri }}"
+  when: has_outbound_network
+
+- name: download clickhouse client
+  get_url:
+    url: "{{ item.url }}"
+    dest: "{{ downloads_dir }}/{{ item.name }}-{{ item.version }}.rpm"
+    checksum: "{{ item.checksum | default(omit) }}"
+    force: yes
+    validate_certs: no
+  register: get_url_result
+  until: "'OK' in get_url_result.msg or 'file already exists' in get_url_result.msg"
+  retries: 4
+  delay: "{{ retry_stagger | random + 3 }}"
+  with_items: "{{ clickhouse_client_uri }}"
+  when: has_outbound_network

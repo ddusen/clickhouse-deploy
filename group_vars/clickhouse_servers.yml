@@ -1,0 +1,19 @@
+---
+clickhouse_server_name: "clickhouse-server"
+clickhouse_http_port: 8123
+clickhouse_tcp_port: 9000
+clickhouse_mysql_port: 9004
+clickhouse_ihttp_port: 9009
+
+clickhouse_host: "0.0.0.0"
+
+clickhouse_root_dir: "/data1"
+clickhouse_data_dir: "/data1/clickhouse"
+
+clickhouse_log_dir: "/data1/clickhouse/log"
+clickhouse_log_size: "100M"
+clickhouse_log_count: "20"
+
+# 28GB * 1024 * 1024 * 1024
+clickhouse_max_mem_size: 30064771072
+clickhouse_max_core_size: 8

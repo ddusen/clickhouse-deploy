@@ -1,0 +1,71 @@
+---
+
+- name: Preflight check - Check ClickHouse server's CPU
+  fail:
+    msg: "This machine does not have sufficient CPU to run ClickHouse, at least {{ clickhouse_min_cpu }} cores."
+  when:
+    - "'clickhouse_servers' in group_names"
+    - ansible_processor_vcpus < clickhouse_min_cpu|int
+
+- name: Preflight check - Check ClickHouse Replica server's CPU
+  fail:
+    msg: "This machine does not have sufficient CPU to run ClickHouse, at least {{ clickhouse_min_cpu }} cores."
+  when:
+    - "'clickhouse_replica_servers' in group_names"
+    - ansible_processor_vcpus < clickhouse_min_cpu|int
+
+- name: Preflight check - Check ClickHouse server's RAM
+  fail:
+    msg: "This machine does not have sufficient RAM to run ClickHouse, at least {{ clickhouse_min_ram }} MB."
+  when:
+    - "'clickhouse_servers' in group_names"
+    - ansible_memtotal_mb < clickhouse_min_ram|int
+
+- name: Preflight check - Check ClickHouse Replica server's RAM
+  fail:
+    msg: "This machine does not have sufficient RAM to run ClickHouse, at least {{ clickhouse_min_ram }} MB."
+  when:
+    - "'clickhouse_replica_servers' in group_names"
+    - ansible_memtotal_mb < clickhouse_min_ram|int
+
+- name: Set deploy_dir if not presented
+  set_fact: deploy_dir="/data1/clickhouse"
+  when: deploy_dir is not defined
+
+- name: Determine which mountpoint deploy dir exists on
+  shell: "df {{ deploy_dir }} | tail -n1 | awk '{print $NF}'"
+  register: deploy_partition
+  changed_when: False
+
+- set_fact:
+    clickhouse_disk_alert: "true"
+  when:
+    - "'clickhouse_servers' in group_names"
+    - item.mount == deploy_partition.stdout
+    - item.size_available < clickhouse_min_disk|int
+  with_items: "{{ ansible_mounts }}"
+
+- name: Preflight check - Check ClickHouse server's disk space
+  debug:
+    msg: 'The file system mounted at {{ deploy_partition.stdout }} does not meet minimum disk space requirement: at least {{ clickhouse_min_disk/1000000000 }} GB.'
+  when:
+    - clickhouse_disk_alert is defined
+    - clickhouse_disk_alert
+    - "'clickhouse_servers' in group_names"
+
+- set_fact:
+    clickhouse_replica_disk_alert: "true"
+  when:
+    - "'clickhouse_replica_servers' in group_names"
+    - item.mount == deploy_partition.stdout
+    - item.size_available < clickhouse_replica_min_disk|int
+  with_items: "{{ ansible_mounts }}"
+
+- name: Preflight check - Check ClickHouse Replica server's disk space
+  debug:
+    msg: 'The file system mounted at {{ deploy_partition.stdout }} does not meet minimum disk space requirement: at least {{ clickhouse_replica_min_disk/1000000000 }} GB.'
+  when:
+    - clickhouse_replica_disk_alert is defined
+    - clickhouse_replica_disk_alert
+    - "'clickhouse_replica_servers' in group_names"
+  
