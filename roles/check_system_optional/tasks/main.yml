@@ -2,17 +2,17 @@
 
 - name: Preflight check - Check ClickHouse server's CPU
   fail:
-    msg: "This machine does not have sufficient CPU to run ClickHouse, at least {{ clickhouse_min_cpu }} cores."
+    msg: "This machine does not have sufficient CPU to run ClickHouse, at least {{ clickhouse_min_core_size }} cores."
   when:
     - "'clickhouse_servers' in group_names"
-    - ansible_processor_vcpus < clickhouse_min_cpu|int
+    - ansible_processor_vcpus < clickhouse_min_core_size|int
 
 - name: Preflight check - Check ClickHouse server's RAM
   fail:
-    msg: "This machine does not have sufficient RAM to run ClickHouse, at least {{ clickhouse_min_ram }} MB."
+    msg: "This machine does not have sufficient RAM to run ClickHouse, at least {{ clickhouse_min_mem_size }} MB."
   when:
     - "'clickhouse_servers' in group_names"
-    - ansible_memtotal_mb < clickhouse_min_ram|int
+    - ansible_memtotal_mb < clickhouse_min_mem_size|int
 
 - name: Set deploy_dir if not presented
   set_fact: deploy_dir="/data1/clickhouse"
