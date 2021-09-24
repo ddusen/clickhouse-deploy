@@ -17,3 +17,7 @@ clickhouse_replica_log_count: "20"
 # 28GB * 1024 * 1024 * 1024
 clickhouse_replica_max_mem_size: 30064771072
 clickhouse_replica_max_core_size: 8
+
+# 4GB * 1024 * 1024 * 1024
+clickhouse_replica_max_mem_size: 4294967296
+clickhouse_replica_max_core_size: 2
