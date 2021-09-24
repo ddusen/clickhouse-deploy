@@ -19,5 +19,5 @@ clickhouse_max_mem_size: 30064771072
 clickhouse_max_core_size: 8
 
 # 4GB * 1024 * 1024 * 1024
-clickhouse_max_mem_size: 4294967296
-clickhouse_max_core_size: 2
+clickhouse_min_mem_size: 4294967296
+clickhouse_min_core_size: 2
