@@ -43,8 +43,8 @@ cd /home/clickhouse/clickhouse-ansible && \
 cd /home/clickhouse/clickhouse-ansible && \
 vi hosts.ini
 ```
-> Example:
->> [hosts.ini](./hosts.ini)
+- Example:
+[hosts.ini](./hosts.ini)
 
 - 执行以下命令，按提示输入部署目标机器的 root 用户密码(iKp****tM4d)
 ```bash
@@ -58,35 +58,20 @@ ansible -i hosts.ini all -m shell -a "fdisk -l" -u clickhouse -b
 #2.创建分区表
 ansible -i hosts.ini all -m shell -a "parted -s -a optimal /dev/vdb mklabel gpt -- mkpart primary ext4 1 -1" -u clickhouse -b
 #3.格式化文件系统
-ansible -i hosts.ini all -m shell -a "mkfs.ext4 /dev/vdb1" -u clickhouse -b
+ansible -i hosts.ini all -m shell -a "mkfs.ext4 /dev/vdb" -u clickhouse -b
 #4.手动挂载
-ansible -i hosts.ini all -m shell -a "mkdir /data1 && mount /dev/vdb1 /data1" -u clickhouse -b
+ansible -i hosts.ini all -m shell -a "mkdir /data && mount /dev/vdb /data" -u clickhouse -b
 #5.设置开启自动挂载
-ansible -i hosts.ini all -m shell -a 'echo "/dev/vdb1 /data1 ext4 defaults 0 0" >> /etc/fstab' -u clickhouse -b
+ansible -i hosts.ini all -m shell -a 'echo "/dev/vdb /data ext4 defaults 0 0" >> /etc/fstab' -u clickhouse -b
 ```
 
 ### 第 7 步：编辑 inventory.ini 文件，分配机器资源
 
-> 集群架构:
-- Sharding
+- 集群架构:
+三节点无副本
 
-|HostName|IP|实例1端口|实例1磁盘|实例2端口|实例2磁盘|
-|---|---|---|---|---|---|
-|clickhouse.sharding1.db|172.30.7.189|8123,8000,8004,8009|/data1 512GB|9123,9000,9004,9009|/data2 512GB|
-|clickhouse.sharding2.db|172.30.7.190|8123,8000,8004,8009|/data1 512GB|9123,9000,9004,9009|/data2 512GB|
-|clickhouse.sharding3.db|172.30.7.191|8123,8000,8004,8009|/data1 512GB|9123,9000,9004,9009|/data2 512GB|
-
-- Sharding<->Replica
-
-||replica1|replica2|
-|---|---|---|
-|sharding1|172.30.7.189|172.30.7.190|
-|sharding2|172.30.7.190|172.30.7.191|
-|sharding3|172.30.7.191|172.30.7.189|
-
-
-> Example:
->> [inventory.ini](./inventory.ini)
+- Example:
+[inventory.ini](./inventory.ini)
 
 ### 第 8 步：部署 ClickHouse 集群
 
@@ -143,7 +128,6 @@ ansible-playbook rolling_update.yml
 # 彻底清除 ClickHouse 集群
 ansible-playbook unsafe_cleanup.yml
 ```
-
 
 *****
 

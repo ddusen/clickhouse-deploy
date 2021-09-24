@@ -1,1 +1,0 @@
-#*/10 * * * * root (which service > /dev/null 2>&1 && (service {{ clickhouse_replica_server_name }} condstart ||:)) || /etc/init.d/{{ clickhouse_replica_server_name }} condstart > /dev/null 2>&1

@@ -29,13 +29,6 @@
   roles:
     - check_config_clickhouse
 
-- name: Pre-check ClickHouse Replica configuration
-  hosts: clickhouse_replica_servers
-  tags:
-    - clickhouse_replica
-  roles:
-    - check_config_clickhouse_replica
-
 # deploying clickhouse cluster
 - name: deploying clickhouse cluster
   hosts: clickhouse_servers
@@ -43,10 +36,3 @@
     - clickhouse
   roles:
     - clickhouse
-
-- name: deploying clickhouse replica cluster
-  hosts: clickhouse_replica_servers
-  tags:
-    - clickhouse_replica
-  roles:
-    - clickhouse_replica

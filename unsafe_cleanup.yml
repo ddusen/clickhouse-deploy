@@ -44,27 +44,3 @@
         warn: false
       ignore_errors: yes 
       become: true
-
-
-- hosts: clickhouse_replica_servers
-  tasks:
-    - name: Remove ClickHouse Replica package.
-      yum:
-        name: 
-          - clickhouse-common-static
-          - clickhouse-common
-          - "{{ clickhouse_replica_server_name }}"
-          - clickhouse-client
-        state: absent
-      become: true
-
-    - name: Remove ClickHouse Replica config/shell/data.
-      shell: |
-        bash -c 'rm -rf /etc/init.d/{{ clickhouse_replica_server_name }}'
-        bash -c 'rm -rf /etc/cron.d/{{ clickhouse_replica_server_name }}'
-        bash -c 'rm -rf /etc/{{ clickhouse_replica_server_name }}'
-        bash -c 'rm -rf {{ clickhouse_replica_data_dir }}'
-      args:
-        warn: false
-      ignore_errors: yes 
-      become: true
