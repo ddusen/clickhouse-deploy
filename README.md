@@ -10,7 +10,7 @@ yum -y install python3-pip
 ```bash
 #1.创建 clickhouse 用户
 useradd -m -d /home/clickhouse clickhouse
-#2.设置 clickhouse 用户密码(iNageOndeNDa)
+#2.设置 clickhouse 用户密码(iKp****tM4d)
 passwd clickhouse
 #3.配置 clickhouse 用户 sudo 免密码，将 clickhouse ALL=(ALL) NOPASSWD: ALL 添加到文件末尾即可
 echo 'clickhouse ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
@@ -21,7 +21,11 @@ ssh-keygen -t rsa
 
 ### 第 3 步：在中控机器上下载 ClickHouse Ansible
 ```bash
-git clone https://gitlab.hexcloud.cn/dusen/clickhouse-ansible.git
+# gitee(二选一)
+git clone https://gitee.com/dusenn/clickhouse-ansible.git
+
+# github(二选一)
+git clone https://github.com/dusennn/clickhouse-ansible.git
 ```
 
 ### 第 4 步：在中控机器上安装 ClickHouse Ansible 及其依赖
@@ -29,8 +33,8 @@ git clone https://gitlab.hexcloud.cn/dusen/clickhouse-ansible.git
 cd /home/clickhouse/clickhouse-ansible && \
     python3 -m venv venv && \
     source venv/bin/activate && \
-    pip install --upgrade pip && \
-    pip install -r ./requirements.txt
+    pip install -i https://pypi.mirrors.ustc.edu.cn/simple/ --upgrade pip && \
+    pip install -i https://pypi.mirrors.ustc.edu.cn/simple/ -r ./requirements.txt
 ```
 
 ### 第 5 步：在中控机上配置部署机器 SSH 互信及 sudo 规则
@@ -40,6 +44,7 @@ cd /home/clickhouse/clickhouse-ansible && \
 vi hosts.ini
 ```
 
+- Examples:
 ```ini
 [servers]
 172.30.7.189
