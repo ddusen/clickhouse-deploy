@@ -18,7 +18,7 @@
     <!-- It is the name that will be shown in the clickhouse-client.
          By default, anything with "production" will be highlighted in red in query prompt.
     -->
-    <display_name>{{ current_host }}</display_name>
+    <display_name>{{ ansible_host }}</display_name>
 
     <!-- Port for HTTP API. See also 'https_port' for secure connections.
          This interface is also used by ODBC and JDBC drivers (DataGrip, Dbeaver, ...)
