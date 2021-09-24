@@ -61,7 +61,7 @@ ntp_server = pool.ntp.org
 ansible-playbook -i hosts.ini create_users.yml -u root -k 
 ```
 
-### 第 6 步：挂载磁盘
+### 第 6 步：挂载磁盘(`可选`)
 ```bash
 #1.查看数据盘
 ansible -i hosts.ini all -m shell -a "fdisk -l" -u clickhouse -b
@@ -78,7 +78,6 @@ ansible -i hosts.ini all -m shell -a 'echo "/dev/vdb1 /data1 ext4 defaults 0 0" 
 ### 第 7 步：编辑 inventory.ini 文件，分配机器资源
 
 > 集群架构:
-
 - Sharding
 
 |HostName|IP|实例1端口|实例1磁盘|实例2端口|实例2磁盘|
@@ -96,7 +95,7 @@ ansible -i hosts.ini all -m shell -a 'echo "/dev/vdb1 /data1 ext4 defaults 0 0" 
 |sharding3|172.30.7.191|172.30.7.189|
 
 
-```
+```ini
 ## clickhouse Cluster Part
 [clickhouse_servers]
 172.30.7.189
