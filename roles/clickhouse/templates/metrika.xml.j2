@@ -8,12 +8,7 @@
                     <replica>
                         <host>{{ host }}</host>
                         <port>{{ hostvars[host].clickhouse_tcp_port }}</port>
-                        <password>LxE***Enh19</password>
-                    </replica>
-                    <replica>
-                        <host>{{ hostvars[host].groups.clickhouse_replica_servers[loop.index-1] }}</host>
-                        <port>{{ hostvars[host].clickhouse_replica_tcp_port }}</port>
-                        <password>LxE***Enh19</password>
+                        <password>{{ clickhouse_default_password }}</password>
                     </replica>
                 </shard>
             {% endfor -%}

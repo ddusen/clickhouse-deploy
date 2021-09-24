@@ -2,7 +2,6 @@
 clickhouse_server_name: "clickhouse-server"
 clickhouse_http_port: 8123
 clickhouse_tcp_port: 9000
-clickhouse_mysql_port: 9004
 clickhouse_ihttp_port: 9009
 
 clickhouse_host: "0.0.0.0"
@@ -14,8 +13,8 @@ clickhouse_log_dir: "/data/clickhouse/log"
 clickhouse_log_size: "100M"
 clickhouse_log_count: "10"
 
-# 16GB * 1024
-clickhouse_max_mem_size: 16384
+# 16GB * 1024 * 1024 * 1024
+clickhouse_max_mem_size: 8589934592
 clickhouse_max_core_size: 8
 
 # 2GB * 1024
@@ -23,3 +22,6 @@ clickhouse_min_mem_size: 2048
 clickhouse_min_core_size: 1
 # 20GB * 1024 * 1024 * 1024
 clickhouse_min_disk_size: 21474836480
+
+clickhouse_default_password: "rwdiKp****tM4d"
+clickhouse_default_password_sha1: "0a28226f841fc055d52c4f71139b4a9556fcd5d8"
