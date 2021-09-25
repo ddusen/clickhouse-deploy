@@ -111,7 +111,7 @@ ansible-playbook bootstrap.yml
 ansible-playbook deploy.yml
 ```
 
-#### 5. 启动 Zookeeper 集群(`可选`: 有单独的zk集群就不用部署新的了)。
+#### 5. 启动 Zookeeper 集群(`可选:有单独的zk集群就不用部署新的了`)。
 ```bash
 ansible-playbook start_zk.yml
 ```
@@ -126,7 +126,7 @@ ansible-playbook start.yml
 ansible-playbook stop.yml
 ```
 
-#### 8. 停止 Zookeeper 集群。
+#### 8. 停止 Zookeeper 集群(`可选:第5步没有启动就不用停止了`)。
 ```bash
 ansible-playbook stop_zk.yml
 ```
