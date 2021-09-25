@@ -34,6 +34,13 @@
   tags:
     - zookeeper
   tasks:
+    - name: stop zookeeper server first
+      shell: "{{ zookeeper_bin_dir }}/zkServer.sh stop"
+      args:
+        warn: false
+      ignore_errors: yes 
+      become: true
+
     - name: check if zookeeper port already in use
       wait_for:
         host: "{{ ansible_host }}"
@@ -50,9 +57,8 @@
         timeout: 3
         msg: "{{ zookeeper_admin_port }} already in use"
 
-    - name: start zookeeper by ./bin/zkServer.sh
+    - name: start zookeeper server
       shell: "{{ zookeeper_bin_dir }}/zkServer.sh start"
-      msg: "zookeeper server started"
 
     - name: wait until the zookeeper port is up
       wait_for:

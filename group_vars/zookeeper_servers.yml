@@ -11,7 +11,7 @@ zookeeper_data_dir: "/data/apache-zookeeper-{{ zookeeper_version }}-bin"
 zookeeper_conf_dir: "/data/apache-zookeeper-{{ zookeeper_version }}-bin/conf"
 zookeeper_bin_dir: "/data/apache-zookeeper-{{ zookeeper_version }}-bin/bin"
 
-zookeeper_log_dir: "/data/apache-zookeeper-{{ zookeeper_version }}-bin/log"
+zookeeper_log_dir: "/data/apache-zookeeper-{{ zookeeper_version }}-bin/logs"
 zookeeper_log_size: "100M"
 zookeeper_log_count: "10"
 zookeeper_log_level: "INFO"
