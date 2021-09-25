@@ -1,25 +1,25 @@
 ---
 - name: set zookeeper package
   set_fact:
-    zookeeper_server_name: "apache-zookeeper-{{ zookeeper_version }}-bin"
+    zookeeper_server_bin: "apache-zookeeper-{{ zookeeper_version }}-bin"
     zookeeper_server_pkg: "apache-zookeeper-{{ zookeeper_version }}-bin.tar.gz"
 
-- name: check zookeeper pkg file {{ zookeeper_root_dir }}/{{ zookeeper_server_pkg }}
-  shell: ls {{ zookeeper_root_dir }}/{{ zookeeper_server_pkg }}
-  register: zookeeper_pkg
-  ignore_errors: true
+- name: checking {{ zookeeper_server_pkg }} exists
+  stat:
+    path: "{{ zookeeper_root_dir }}/{{ zookeeper_server_pkg }}"
+  register: zookeeper_server_pkg_data
 
-- name: check zookeeper bin folder {{ zookeeper_root_dir }}/{{ zookeeper_server_name }}
-  shell: ls {{ zookeeper_root_dir }}/{{ zookeeper_server_name }}
-  register: zookeeper_bin
-  ignore_errors: true
+- name: checking {{ zookeeper_server_bin }} exists
+  stat:
+    path: "{{ zookeeper_root_dir }}/{{ zookeeper_server_bin }}"
+  register: zookeeper_server_bin_data
 
 - name: copy local package to remote
   copy: src="{{ item.src }}" dest="{{ item.dest }}" mode=0755
   with_items:
     - {src: "{{ downloads_dir }}/{{ zookeeper_server_pkg }}", dest: "{{ zookeeper_root_dir }}"}
-  when: zookeeper_pkg is failure || zookeeper_bin is failure
+  when: not zookeeper_server_pkg_data.stat.exists
 
 - name: unarchive zookeeper pkg
   unarchive: src={{ zookeeper_root_dir }}/{{ zookeeper_server_pkg }} dest={{ zookeeper_root_dir }}/
-  when: zookeeper_bin is failure
+  when: not zookeeper_server_bin_data.stat.exists
