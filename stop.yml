@@ -30,8 +30,8 @@
       shell: /etc/init.d/{{ clickhouse_server_name }} stop
       args:
         warn: false
+      ignore_errors: yes 
       become: true
-      become_user: root
 
     - name: wait until the ClickHouse http port is down
       wait_for:

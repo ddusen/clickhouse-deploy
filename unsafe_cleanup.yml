@@ -34,10 +34,8 @@
         state: absent
       become: true
 
-    - name: remove clickhouse config/shell/data.
+    - name: remove clickhouse config and data.
       shell: |
-        bash -c 'rm -rf /etc/init.d/{{ clickhouse_server_name }}'
-        bash -c 'rm -rf /etc/cron.d/{{ clickhouse_server_name }}'
         bash -c 'rm -rf /etc/{{ clickhouse_server_name }}'
         bash -c 'rm -rf {{ clickhouse_data_dir }}'
       args:
@@ -45,10 +43,13 @@
       ignore_errors: yes 
       become: true
 
+- import_playbook: stop_zk.yml
+
 - hosts: zookeeper_servers
   tasks:
     - name: remove zookeeper package and binary.
       shell: |
+        bash -c 'rm -rf {{ clickhouse_data_dir }}'
         bash -c 'rm -rf {{ clickhouse_data_dir }}'
       args:
         warn: false
