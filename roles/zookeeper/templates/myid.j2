@@ -1,0 +1,6 @@
+{% set current_host = ansible_host -%}
+{% for host in groups.clickhouse_servers -%}
+    {%- if host == current_host -%}
+        {{ loop.index }}
+    {% endif %}
+{% endfor -%}

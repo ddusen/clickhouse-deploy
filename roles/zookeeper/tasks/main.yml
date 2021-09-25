@@ -24,6 +24,9 @@
   unarchive: src="{{ zookeeper_root_dir }}/{{ zookeeper_server_pkg }}" dest="{{ zookeeper_root_dir }}/"
   when: not zookeeper_server_bin_data.stat.exists
 
+- name: create zookeeper myid file.
+  template: src="myid.j2" dest="{{ zookeeper_data_dir }}/myid" mode=0644
+
 - name: create zookeeper configuration file.
   template: src="zoo.cfg.j2" dest="{{ zookeeper_conf_dir }}/zoo.cfg" mode=0644
 
