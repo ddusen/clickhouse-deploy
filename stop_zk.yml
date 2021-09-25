@@ -12,4 +12,38 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# The playbook of ClickHouse
+# The playbook of zookeeper
+
+- name: check config locally
+  hosts: localhost
+  any_errors_fatal: true
+  tags:
+    - always
+  roles:
+    - check_config_static
+
+- name: stopping zookeeper cluster
+  hosts: zookeeper_servers
+  tags:
+    - zookeeper
+  tasks:
+    - name: stop zookeeper server first
+      shell: "{{ zookeeper_bin_dir }}/zkServer.sh stop"
+      args:
+        warn: false
+      ignore_errors: yes 
+      become: true
+
+    - name: wait until the zookeeper client port is down
+      wait_for:
+        host: "{{ ansible_host }}"
+        port: "{{ zookeeper_client_port }}"
+        state: started
+        msg: "the zookeeper client port {{ zookeeper_client_port }} is not down"
+
+    - name: wait until the zookeeper admin port is down
+      wait_for:
+        host: "{{ ansible_host }}"
+        port: "{{ zookeeper_admin_port }}"
+        state: started
+        msg: "the zookeeper client port {{ zookeeper_admin_port }} is not down"

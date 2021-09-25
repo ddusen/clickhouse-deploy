@@ -24,7 +24,7 @@
 
 - hosts: clickhouse_servers
   tasks:
-    - name: Remove ClickHouse package.
+    - name: remove clickhouse package.
       yum:
         name: 
           - clickhouse-common-static
@@ -34,11 +34,21 @@
         state: absent
       become: true
 
-    - name: Remove ClickHouse config/shell/data.
+    - name: remove clickhouse config/shell/data.
       shell: |
         bash -c 'rm -rf /etc/init.d/{{ clickhouse_server_name }}'
         bash -c 'rm -rf /etc/cron.d/{{ clickhouse_server_name }}'
         bash -c 'rm -rf /etc/{{ clickhouse_server_name }}'
+        bash -c 'rm -rf {{ clickhouse_data_dir }}'
+      args:
+        warn: false
+      ignore_errors: yes 
+      become: true
+
+- hosts: zookeeper_servers
+  tasks:
+    - name: remove zookeeper package and binary.
+      shell: |
         bash -c 'rm -rf {{ clickhouse_data_dir }}'
       args:
         warn: false
