@@ -22,17 +22,17 @@
   roles:
     - check_config_static
 
-- name: pre-check clickhouse configuration
-  hosts: clickhouse_servers
+- name: pre-check zookeeper configuration
+  hosts: zookeeper_servers
   tags:
-    - clickhouse
+    - zookeeper
   roles:
-    - check_config_clickhouse
+    - check_config_zookeeper
 
-# deploying clickhouse cluster
-- name: deploying clickhouse cluster
-  hosts: clickhouse_servers
+# deploying zookeeper cluster
+- name: deploying zookeeper cluster
+  hosts: zookeeper_servers
   tags:
-    - clickhouse
+    - zookeeper
   roles:
-    - clickhouse
+    - zookeeper

@@ -22,13 +22,6 @@
   roles:
     - check_config_static
 
-- name: deploying zookeeper cluster
-  hosts: zookeeper_servers
-  tags:
-    - zookeeper
-  roles:
-    - zookeeper
-
 - name: starting zookeeper cluster
   hosts: zookeeper_servers
   tags:
