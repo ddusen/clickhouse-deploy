@@ -1,7 +1,8 @@
 tickTime=3000
 dataDir={{ zookeeper_data_dir }}
 dataLogDir={{ zookeeper_log_dir }}/logs
-clientPort={{ zookeeper_tcp_port }}
+clientPort={{ zookeeper_port }}
+admin.serverPort={{ zookeeper_admin_port }}
 preAllocSize=8192
 snapCount=1000
 autopurge.snapRetainCount=6

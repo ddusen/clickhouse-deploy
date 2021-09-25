@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# The playbook of ClickHouse
+# The playbook of zookeeper
 
 - name: check config locally
   hosts: localhost
@@ -28,3 +28,42 @@
     - zookeeper
   roles:
     - zookeeper
+
+- name: starting zookeeper cluster
+  hosts: zookeeper_servers
+  tags:
+    - zookeeper
+  tasks:
+    - name: check if zookeeper port already in use
+      wait_for:
+        host: "{{ ansible_host }}"
+        port: "{{ zookeeper_port }}"
+        state: stopped
+        timeout: 3
+        msg: "{{ zookeeper_port }} already in use"
+
+    - name: check if zookeeper admin port already in use
+      wait_for:
+        host: "{{ ansible_host }}"
+        port: "{{ zookeeper_admin_port }}"
+        state: stopped
+        timeout: 3
+        msg: "{{ zookeeper_admin_port }} already in use"
+
+    - name: start zookeeper by ./bin/zkServer.sh
+      shell: "{{ zookeeper_bin_dir }}/zkServer.sh start"
+      msg: "zookeeper server started"
+
+    - name: wait until the zookeeper port is up
+      wait_for:
+        host: "{{ ansible_host }}"
+        port: "{{ zookeeper_port }}"
+        state: started
+        msg: "the zookeeper port {{ zookeeper_port }} is not up"
+
+    - name: wait until the zookeeper admin port is up
+      wait_for:
+        host: "{{ ansible_host }}"
+        port: "{{ zookeeper_admin_port }}"
+        state: started
+        msg: "the zookeeper port {{ zookeeper_admin_port }} is not up"

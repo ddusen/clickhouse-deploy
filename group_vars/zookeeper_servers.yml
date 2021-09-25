@@ -1,13 +1,15 @@
 ---
 
 # Zookeeper Server
-zookeeper_tcp_port: 2181
+zookeeper_port: 2181
+zookeeper_admin_port: 8080
 
 zookeeper_host: "0.0.0.0"
 
 zookeeper_root_dir: "/data"
 zookeeper_data_dir: "/data/apache-zookeeper-{{ zookeeper_version }}-bin"
 zookeeper_conf_dir: "/data/apache-zookeeper-{{ zookeeper_version }}-bin/conf"
+zookeeper_bin_dir: "/data/apache-zookeeper-{{ zookeeper_version }}-bin/bin"
 
 zookeeper_log_dir: "/data/apache-zookeeper-{{ zookeeper_version }}-bin/log"
 zookeeper_log_size: "100M"
@@ -23,8 +25,5 @@ zookeeper_min_mem_size: 2048
 zookeeper_min_core_size: 1
 # 20GB * 1024 * 1024 * 1024
 zookeeper_min_disk_size: 21474836480
-
-zookeeper_default_password: "rwdiKp****tM4d"
-zookeeper_default_password_sha1: "0a28226f841fc055d52c4f71139b4a9556fcd5d8"
 
 zookeeper_java_version: 1.8.0

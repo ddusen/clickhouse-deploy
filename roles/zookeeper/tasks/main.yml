@@ -29,3 +29,9 @@
 
 - name: create zookeeper log4j configuration file.
   template: src="log4j.properties.j2" dest="{{ zookeeper_conf_dir }}/log4j.properties" mode=0644
+
+- name: install open jdk
+  yum:
+    name: java-1.8.0-openjdk
+    state: present
+  become: true
