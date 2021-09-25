@@ -16,14 +16,14 @@
     </clickhouse_remote_servers>
     
     <!-- zookeeper 配置 -->
-    <zookeeper-servers>
+    <zookeeper_servers>
         {% for host in groups.zookeeper_servers -%}
             <node index="{{ loop.index }}">
                 <host>{{ host }}</host>
                 <port>2181</port>
             </node>
         {% endfor -%}
-    </zookeeper-servers>
+    </zookeeper_servers>
     
     <!-- macros配置 -->
     <macros>

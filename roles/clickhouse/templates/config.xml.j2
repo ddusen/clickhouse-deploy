@@ -8,8 +8,8 @@
 <yandex>
     <logger>
         <level>{{ clickhouse_log_level }}</level>
-        <log>{{ clickhouse_log_dir }}/clickhouse-server/clickhouse-server.log</log>
-        <errorlog>{{ clickhouse_log_dir }}/clickhouse-server/clickhouse-server.err.log</errorlog>
+        <log>{{ clickhouse_log_dir }}/clickhouse-server.log</log>
+        <errorlog>{{ clickhouse_log_dir }}/clickhouse-server.err.log</errorlog>
         <size>{{ clickhouse_log_size }}</size>
         <count>{{ clickhouse_log_count }}</count>
         <console>1</console> 
@@ -222,6 +222,10 @@
 
     <!-- Default session timeout, in seconds. Default: 60. -->
     <default_session_timeout>300</default_session_timeout>
+
+    <remote_servers incl="clickhouse_remote_servers" />
+    <zookeeper incl="zookeeper_servers" optional="true" />
+    <macros incl="macros" optional="true" />
 
     <!-- If element has 'incl' attribute, then for it's value will be used corresponding substitution from another file.
          By default, path to file with substitutions is /etc/metrika.xml. It could be changed in config in 'include_from' element.
