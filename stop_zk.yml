@@ -38,12 +38,12 @@
       wait_for:
         host: "{{ ansible_host }}"
         port: "{{ zookeeper_client_port }}"
-        state: started
+        state: stopped
         msg: "the zookeeper client port {{ zookeeper_client_port }} is not down"
 
     - name: wait until the zookeeper admin port is down
       wait_for:
         host: "{{ ansible_host }}"
         port: "{{ zookeeper_admin_port }}"
-        state: started
+        state: stopped
         msg: "the zookeeper client port {{ zookeeper_admin_port }} is not down"
