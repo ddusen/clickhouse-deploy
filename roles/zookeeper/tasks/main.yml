@@ -21,5 +21,11 @@
   when: not zookeeper_server_pkg_data.stat.exists
 
 - name: unarchive zookeeper pkg
-  unarchive: src={{ zookeeper_root_dir }}/{{ zookeeper_server_pkg }} dest={{ zookeeper_root_dir }}/
+  unarchive: src="{{ zookeeper_root_dir }}/{{ zookeeper_server_pkg }}" dest="{{ zookeeper_root_dir }}/"
   when: not zookeeper_server_bin_data.stat.exists
+
+- name: create zookeeper configuration file.
+  template: src="zoo.cfg.j2" dest="{{ zookeeper_conf_dir }}/zoo.cfg" mode=0644
+
+- name: create zookeeper log4j configuration file.
+  template: src="log4j.properties.j2" dest="{{ zookeeper_conf_dir }}/log4j.properties" mode=0644
