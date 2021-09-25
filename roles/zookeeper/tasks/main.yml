@@ -1,15 +1,25 @@
 ---
-- name: Set zookeeper package
+- name: set zookeeper package
   set_fact:
-    zookeeper_pkg: "apache-zookeeper-{{ zookeeper_version }}-bin.tar.gz"
+    zookeeper_server_name: "apache-zookeeper-{{ zookeeper_version }}-bin"
+    zookeeper_server_pkg: "{{ zookeeper_server_name }}.tar.gz"
 
-- name: Download zookeeper package
-  get_url:
-    url: "https://mirrors.tuna.tsinghua.edu.cn/apache/zookeeper/zookeeper-{{ zookeeper_pkg }}/"
-    dest: "{{ zookeeper_root_dir }}/{{ zookeeper_pkg }}"
-    force: yes
-    validate_certs: no
-  register: get_url_result
-  until: "'OK' in get_url_result.msg or 'file already exists' in get_url_result.msg"
-  retries: 4
-  delay: "{{ retry_stagger | random + 3 }}"
+- name: check zookeeper pkg file {{ zookeeper_root_dir }}/{{ zookeeper_server_pkg }}
+  shell: ls {{ zookeeper_root_dir }}/{{ zookeeper_server_pkg }}
+  register: zookeeper_pkg
+  ignore_errors: true
+
+- name: check zookeeper bin folder {{ zookeeper_root_dir }}/{{ zookeeper_server_name }}
+  shell: ls {{ zookeeper_root_dir }}/{{ zookeeper_server_name }}
+  register: zookeeper_bin
+  ignore_errors: true
+
+- name: copy local package to remote
+  copy: src="{{ item.src }}" dest="{{ item.dest }}" mode=0755
+  with_items:
+    - {src: "{{ downloads_dir }}/{{ zookeeper_server_pkg }}", dest: "{{ zookeeper_root_dir }}"}
+  when: zookeeper_pkg is failure || zookeeper_bin is failure
+
+- name: unarchive zookeeper pkg
+  unarchive: src={{ zookeeper_root_dir }}/{{ zookeeper_server_pkg }} dest={{ zookeeper_root_dir }}/
+  when: zookeeper_bin is failure

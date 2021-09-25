@@ -81,3 +81,17 @@
   delay: "{{ retry_stagger | random + 3 }}"
   with_items: "{{ clickhouse_client_uri }}"
   when: has_outbound_network
+
+- name: download zookeeper server
+  get_url:
+    url: "{{ item.url }}"
+    dest: "{{ downloads_dir }}/apache-{{ item.name }}-{{ item.version }}-bin.tar.gz"
+    checksum: "{{ item.checksum | default(omit) }}"
+    force: yes
+    validate_certs: no
+  register: get_url_result
+  until: "'OK' in get_url_result.msg or 'file already exists' in get_url_result.msg"
+  retries: 4
+  delay: "{{ retry_stagger | random + 3 }}"
+  with_items: "{{ zookeeper_server_uri }}"
+  when: has_outbound_network
