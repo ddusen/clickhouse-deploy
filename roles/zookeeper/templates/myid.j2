@@ -2,5 +2,5 @@
 {% for host in groups.clickhouse_servers -%}
     {%- if host == current_host -%}
         {{ loop.index }}
-    {% endif %}
+    {%- endif -%}
 {% endfor -%}

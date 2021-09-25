@@ -1,10 +1,10 @@
 ---
 
 # Zookeeper Server
-zookeeper_port: 2181
+zookeeper_client_port: 2181
+zookeeper_peer_port: 2888
+zookeeper_leader_port: 3888
 zookeeper_admin_port: 8080
-
-zookeeper_host: "0.0.0.0"
 
 zookeeper_root_dir: "/data"
 zookeeper_data_dir: "/data/apache-zookeeper-{{ zookeeper_version }}-bin"

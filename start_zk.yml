@@ -41,13 +41,13 @@
       ignore_errors: yes 
       become: true
 
-    - name: check if zookeeper port already in use
+    - name: check if zookeeper client port already in use
       wait_for:
         host: "{{ ansible_host }}"
-        port: "{{ zookeeper_port }}"
+        port: "{{ zookeeper_client_port }}"
         state: stopped
         timeout: 3
-        msg: "{{ zookeeper_port }} already in use"
+        msg: "{{ zookeeper_client_port }} already in use"
 
     - name: check if zookeeper admin port already in use
       wait_for:
@@ -59,17 +59,18 @@
 
     - name: start zookeeper server
       shell: "{{ zookeeper_bin_dir }}/zkServer.sh start"
+      become: true
 
-    - name: wait until the zookeeper port is up
+    - name: wait until the zookeeper client port is up
       wait_for:
         host: "{{ ansible_host }}"
-        port: "{{ zookeeper_port }}"
+        port: "{{ zookeeper_client_port }}"
         state: started
-        msg: "the zookeeper port {{ zookeeper_port }} is not up"
+        msg: "the zookeeper client port {{ zookeeper_client_port }} is not up"
 
     - name: wait until the zookeeper admin port is up
       wait_for:
         host: "{{ ansible_host }}"
         port: "{{ zookeeper_admin_port }}"
         state: started
-        msg: "the zookeeper port {{ zookeeper_admin_port }} is not up"
+        msg: "the zookeeper client port {{ zookeeper_admin_port }} is not up"

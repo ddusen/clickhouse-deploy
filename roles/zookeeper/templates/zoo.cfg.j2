@@ -1,7 +1,7 @@
 tickTime=3000
 dataDir={{ zookeeper_data_dir }}
 dataLogDir={{ zookeeper_log_dir }}
-clientPort={{ zookeeper_port }}
+clientPort={{ zookeeper_client_port }}
 admin.serverPort={{ zookeeper_admin_port }}
 preAllocSize=8192
 snapCount=1000
@@ -10,5 +10,5 @@ autopurge.purgeInterval=72
 initLimit=10
 syncLimit=5
 {% for host in groups.zookeeper_servers -%}
-server.{{ loop.index }}={{ host }}:2888:3888
+server.{{ loop.index }}={{ host }}:{{ zookeeper_peer_port }}:{{ zookeeper_leader_port }}
 {% endfor -%}
