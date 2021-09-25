@@ -2,7 +2,7 @@
 
 ### 第 1 步：在中控机上安装系统依赖包
 ```bash
-yum -y install epel-release git curl sshpass && \
+yum -y install epel-release git curl sshpass htop && \
 yum -y install python3-pip
 ```
 

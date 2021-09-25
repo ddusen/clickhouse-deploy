@@ -1,0 +1,29 @@
+---
+
+# Zookeeper Server
+zookeeper_tcp_port: 2181
+
+zookeeper_host: "0.0.0.0"
+
+zookeeper_root_dir: "/data"
+zookeeper_data_dir: "/data/zookeeper"
+
+zookeeper_log_dir: "/data/zookeeper/log"
+zookeeper_log_size: "100M"
+zookeeper_log_count: "10"
+zookeeper_log_level: "INFO"
+
+# 16GB * 1024 * 1024 * 1024
+zookeeper_max_mem_size: 8589934592
+zookeeper_max_core_size: 8
+
+# 2GB * 1024
+zookeeper_min_mem_size: 2048
+zookeeper_min_core_size: 1
+# 20GB * 1024 * 1024 * 1024
+zookeeper_min_disk_size: 21474836480
+
+zookeeper_default_password: "rwdiKp****tM4d"
+zookeeper_default_password_sha1: "0a28226f841fc055d52c4f71139b4a9556fcd5d8"
+
+zookeeper_java_version: 1.8.0

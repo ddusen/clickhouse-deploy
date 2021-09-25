@@ -7,7 +7,7 @@
 -->
 <yandex>
     <logger>
-        <level>information</level>
+        <level>{{ clickhouse_log_level }}</level>
         <log>{{ clickhouse_log_dir }}/clickhouse-server/clickhouse-server.log</log>
         <errorlog>{{ clickhouse_log_dir }}/clickhouse-server/clickhouse-server.err.log</errorlog>
         <size>{{ clickhouse_log_size }}</size>

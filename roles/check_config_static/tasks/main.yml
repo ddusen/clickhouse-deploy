@@ -9,6 +9,10 @@
   fail: msg="clickhouse_clients should be specified."
   when: groups['clickhouse_clients'] | length < 1
 
+- name: Ensure zookeeper_servers exists
+  fail: msg="zookeeper_servers should be specified."
+  when: groups['zookeeper_servers'] | length < 1
+
 - name: Check ansible_user variable
   fail: msg="ansible_user == 'root' is not supported, please ssh via normal user"
   when: ansible_user == 'root'
