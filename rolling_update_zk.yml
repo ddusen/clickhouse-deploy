@@ -1,0 +1,51 @@
+---
+# Author: dusen.me@gmail.com
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# The playbook of ClickHouse
+
+- name: check config locally
+  hosts: localhost
+  any_errors_fatal: true
+  tags:
+    - always
+  roles:
+    - check_config_static
+
+- hosts: zookeeper_servers
+  tags:
+    - zookeeper
+  tasks:
+    - name: update zookeeper configuration file.
+      template: src="roles/zookeeper/templates/zoo.cfg.j2" dest="{{ zookeeper_conf_dir }}/zoo.cfg" mode=0644
+
+    - name: update zookeeper log4j configuration file.
+      template: src="roles/zookeeper/templates/log4j.properties.j2" dest="{{ zookeeper_conf_dir }}/log4j.properties" mode=0644
+
+    - name: restart zookeeper server
+      shell: "{{ zookeeper_bin_dir }}/zkServer.sh restart"
+      become: true
+
+    - name: wait until the zookeeper client port is up
+      wait_for:
+        host: "{{ ansible_host }}"
+        port: "{{ zookeeper_client_port }}"
+        state: started
+        msg: "the zookeeper client port {{ zookeeper_client_port }} is not up"
+
+    - name: wait until the zookeeper admin port is up
+      wait_for:
+        host: "{{ ansible_host }}"
+        port: "{{ zookeeper_admin_port }}"
+        state: started
+        msg: "the zookeeper client port {{ zookeeper_admin_port }} is not up"

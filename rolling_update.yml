@@ -26,57 +26,43 @@
   tags:
     - clickhouse
   tasks:
-    - name: Update ClickHouse configuration file.
+    - name: update clickhouse configuration file.
       template: src="roles/clickhouse/templates/config.xml.j2" dest="/etc/{{ clickhouse_server_name }}/config.xml" mode=0644
-      become: true
-      become_user: root
 
-    - name: Update ClickHouse users file.
+    - name: update clickhouse users file.
       template: src="roles/clickhouse/templates/users.xml.j2" dest="/etc/{{ clickhouse_server_name }}/users.xml" mode=0644
-      become: true
-      become_user: root
 
-    - name: Update ClickHouse metrika file.
+    - name: update clickhouse metrika file.
       template: src="roles/clickhouse/templates/metrika.xml.j2" dest="/etc/{{ clickhouse_server_name }}/metrika.xml" mode=0644
-      become: true
-      become_user: root
       
-    - name: restart ClickHouse by init.d
+    - name: restart clickhouse by init.d
       shell: /etc/init.d/{{ clickhouse_server_name }} restart
       args:
         warn: false
       become: true
-      become_user: root
 
-    - name: wait until the ClickHouse http port is up
+    - name: wait until the clickhouse http port is up
       wait_for:
         host: "{{ ansible_host }}"
         port: "{{ clickhouse_http_port }}"
         state: started
         msg: "the ClickHouse port {{ clickhouse_http_port }} is not up"
 
-    - name: wait until the ClickHouse tcp port is up
+    - name: wait until the clickhouse tcp port is up
       wait_for:
         host: "{{ ansible_host }}"
         port: "{{ clickhouse_tcp_port }}"
         state: started
         msg: "the ClickHouse port {{ clickhouse_tcp_port }} is not up"
 
-    - name: wait until the ClickHouse mysql port is up
-      wait_for:
-        host: "{{ ansible_host }}"
-        port: "{{ clickhouse_mysql_port }}"
-        state: started
-        msg: "the ClickHouse port {{ clickhouse_mysql_port }} is not up"
-
-    - name: wait until the ClickHouse interserver http port is up
+    - name: wait until the clickhouse interserver http port is up
       wait_for:
         host: "{{ ansible_host }}"
         port: "{{ clickhouse_ihttp_port }}"
         state: started
         msg: "the ClickHouse port {{ clickhouse_ihttp_port }} is not up"
 
-    - name: wait until the ClickHouse status is OK
+    - name: wait until the clickhouse status is ok
       uri:
         url: "http://{{ ansible_host }}:{{ clickhouse_http_port }}/"
         return_content: yes

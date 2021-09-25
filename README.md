@@ -141,8 +141,14 @@ ansible-playbook stop_zk.yml
 # 滚动更新 ClickHouse 集群
 ansible-playbook rolling_update.yml
 
+# 滚动更新 Zookeeper 集群
+ansible-playbook rolling_update_zk.yml
+
 # 彻底清除 ClickHouse 集群
 ansible-playbook unsafe_cleanup.yml
+
+# 彻底清除 Zookeeper 集群
+ansible-playbook unsafe_cleanup_zk.yml
 ```
 
 *****
