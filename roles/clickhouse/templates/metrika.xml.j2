@@ -31,7 +31,7 @@
         {% for host in groups.clickhouse_servers -%}
             {%- if host == current_host -%}
                 <shard>0{{ loop.index }}</shard>
-                <replica>cluster-{{ current_host }}-0{{ loop.index }}</replica> 
+                <replica>{{ current_host }}</replica> 
             {% endif %}
         {% endfor -%}
     </macros>
