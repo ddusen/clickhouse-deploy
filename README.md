@@ -67,8 +67,14 @@ ansible -i hosts.ini all -m shell -a 'echo "/dev/vdb /data ext4 defaults 0 0" >>
 
 ### 第 7 步：编辑 inventory.ini 文件，分配机器资源
 
-- 集群架构:
-三节点无副本
+- 集群架构: 五节点单副本
+┌─cluster─┬─shard_num─┬─shard_weight─┬─replica_num─┬─host_name─────┬─host_address──┬─port─┬─is_local─┐
+│ default │         1 │            1 │           1 │ 172.25.13.205 │ 172.25.13.205 │ 9000 │        1 │
+│ default │         2 │            1 │           1 │ 172.25.13.206 │ 172.25.13.206 │ 9000 │        0 │
+│ default │         3 │            1 │           1 │ 172.25.13.207 │ 172.25.13.207 │ 9000 │        0 │
+│ default │         4 │            1 │           1 │ 172.25.13.208 │ 172.25.13.208 │ 9000 │        0 │
+│ default │         5 │            1 │           1 │ 172.25.13.209 │ 172.25.13.209 │ 9000 │        0 │
+└─────────┴───────────┴──────────────┴─────────────┴───────────────┴───────────────┴──────┴──────────┘
 
 - Example:
 [inventory.ini](./inventory.ini)
