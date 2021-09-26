@@ -11,3 +11,9 @@
   when:
     - "'CentOS' in distro"
     - "not has_python"
+
+- name: Debian/Ubuntu - install infra package
+  shell: sudo apt-get -y install htop
+
+- name: Redhat/CentOS - install infra package
+  shell: sudo yum -y install htop
