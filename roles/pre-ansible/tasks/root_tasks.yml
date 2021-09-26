@@ -14,6 +14,10 @@
 
 - name: Debian/Ubuntu - install infra package
   shell: sudo apt-get -y install htop
+  when:
+    - "'Ubuntu' in distro or 'Debian' in distro"
 
 - name: Redhat/CentOS - install infra package
   shell: sudo yum -y install htop
+  when:
+    - "'CentOS' in distro"
