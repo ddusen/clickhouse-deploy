@@ -16,9 +16,9 @@ clickhouse_log_size: "100M"
 clickhouse_log_count: "10"
 clickhouse_log_level: "information"
 
-# 16GB * 1024 * 1024 * 1024
-clickhouse_max_mem_size: 8589934592
-clickhouse_max_core_size: 8
+# 64GB * 1024 * 1024 * 1024
+clickhouse_max_mem_size: 68719476736
+clickhouse_max_core_size: 32
 
 # 2GB * 1024
 clickhouse_min_mem_size: 2048
