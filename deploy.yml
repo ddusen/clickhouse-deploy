@@ -29,10 +29,18 @@
   roles:
     - check_config_clickhouse
 
+# deploying clickhouse client
+- name: deploying clickhouse client
+  hosts: clickhouse_clients
+  tags:
+    - clickhouse_client
+  roles:
+    - clickhouse_client
+
 # deploying clickhouse cluster
 - name: deploying clickhouse cluster
   hosts: clickhouse_servers
   tags:
-    - clickhouse
+    - clickhouse_server
   roles:
-    - clickhouse
+    - clickhouse_server

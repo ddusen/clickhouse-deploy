@@ -3,14 +3,12 @@
   set_fact:
     clickhouse_common_pkg: "clickhouse_common-{{ clickhouse_version }}.rpm"
     clickhouse_server_pkg: "clickhouse_server-{{ clickhouse_version }}.rpm"
-    clickhouse_client_pkg: "clickhouse_client-{{ clickhouse_version }}.rpm"
 
 - name: copy local package to remote
   copy: src="{{ item.src }}" dest="{{ item.dest }}" mode=0755
   with_items:
     - {src: "{{ downloads_dir }}/{{ clickhouse_common_pkg }}", dest: "{{ clickhouse_root_dir }}"}
     - {src: "{{ downloads_dir }}/{{ clickhouse_server_pkg }}", dest: "{{ clickhouse_root_dir }}"}
-    - {src: "{{ downloads_dir }}/{{ clickhouse_client_pkg }}", dest: "{{ clickhouse_root_dir }}"}
 
 - name: remove clickhouse package.
   yum:
@@ -18,7 +16,6 @@
       - clickhouse-common-static
       - clickhouse-common
       - clickhouse-server
-      - clickhouse-client
       - clickhouse*
     state: absent
   become: true
@@ -31,12 +28,6 @@
 
 - name: install clickhouse server package.
   shell: rpm -ivh "{{ clickhouse_root_dir }}/{{ clickhouse_server_pkg }}"
-  args:
-    warn: false
-  become: true
-
-- name: install clickhouse client package.
-  shell: rpm -ivh "{{ clickhouse_root_dir }}/{{ clickhouse_client_pkg }}"
   args:
     warn: false
   become: true

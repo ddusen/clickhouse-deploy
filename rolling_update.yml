@@ -24,16 +24,16 @@
 
 - hosts: clickhouse_servers
   tags:
-    - clickhouse
+    - clickhouse_server
   tasks:
     - name: update clickhouse configuration file.
-      template: src="roles/clickhouse/templates/config.xml.j2" dest="/etc/{{ clickhouse_server_name }}/config.xml" mode=0644
+      template: src="roles/clickhouse_server/templates/config.xml.j2" dest="/etc/{{ clickhouse_server_name }}/config.xml" mode=0644
 
     - name: update clickhouse users file.
-      template: src="roles/clickhouse/templates/users.xml.j2" dest="/etc/{{ clickhouse_server_name }}/users.xml" mode=0644
+      template: src="roles/clickhouse_server/templates/users.xml.j2" dest="/etc/{{ clickhouse_server_name }}/users.xml" mode=0644
 
     - name: update clickhouse metrika file.
-      template: src="roles/clickhouse/templates/metrika.xml.j2" dest="/etc/{{ clickhouse_server_name }}/metrika.xml" mode=0644
+      template: src="roles/clickhouse_server/templates/metrika.xml.j2" dest="/etc/{{ clickhouse_server_name }}/metrika.xml" mode=0644
       
     - name: restart clickhouse by init.d
       shell: /etc/init.d/{{ clickhouse_server_name }} restart

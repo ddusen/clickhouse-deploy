@@ -1,0 +1,24 @@
+---
+- name: set clickhouse package name
+  set_fact:
+    clickhouse_client_pkg: "clickhouse_client-{{ clickhouse_version }}.rpm"
+
+- name: copy local package to remote
+  copy: src="{{ item.src }}" dest="{{ item.dest }}" mode=0755
+  with_items:
+    - {src: "{{ downloads_dir }}/{{ clickhouse_client_pkg }}", dest: "{{ clickhouse_root_dir }}"}
+
+- name: remove clickhouse package.
+  yum:
+    name: 
+      - clickhouse-common-static
+      - clickhouse-common
+      - clickhouse-client
+    state: absent
+  become: true
+
+- name: install clickhouse client package.
+  shell: rpm -ivh "{{ clickhouse_root_dir }}/{{ clickhouse_client_pkg }}"
+  args:
+    warn: false
+  become: true

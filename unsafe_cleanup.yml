@@ -24,13 +24,12 @@
 
 - hosts: clickhouse_servers
   tasks:
-    - name: remove clickhouse package.
+    - name: remove clickhouse server package.
       yum:
         name: 
           - clickhouse-common-static
           - clickhouse-common
           - "{{ clickhouse_server_name }}"
-          - clickhouse-client
         state: absent
       become: true
 
@@ -40,6 +39,26 @@
         bash -c 'rm -rf {{ clickhouse_data_dir }}'
         bash -c 'rm -rf {{ clickhouse_root_dir }}/clickhouse_common-{{ clickhouse_version }}.rpm'
         bash -c 'rm -rf {{ clickhouse_root_dir }}/clickhouse_server-{{ clickhouse_version }}.rpm'
+      args:
+        warn: false
+      ignore_errors: yes 
+      become: true
+
+- hosts: clickhouse_clients
+  tasks:
+    - name: remove clickhouse client package.
+      yum:
+        name: 
+          - clickhouse-common-static
+          - clickhouse-common
+          - clickhouse-client
+        state: absent
+      become: true
+
+    - name: remove clickhouse config and data.
+      shell: |
+        bash -c 'rm -rf {{ clickhouse_data_dir }}'
+        bash -c 'rm -rf {{ clickhouse_root_dir }}/clickhouse_common-{{ clickhouse_version }}.rpm'
         bash -c 'rm -rf {{ clickhouse_root_dir }}/clickhouse_client-{{ clickhouse_version }}.rpm'
       args:
         warn: false

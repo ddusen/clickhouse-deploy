@@ -24,7 +24,7 @@
 
 - hosts: clickhouse_servers
   tags:
-    - clickhouse
+    - clickhouse_server
   tasks:
     - name: Check if clickhouse http port already in use
       wait_for:

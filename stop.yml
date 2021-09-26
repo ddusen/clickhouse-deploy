@@ -24,7 +24,7 @@
 
 - hosts: clickhouse_servers
   tags:
-    - clickhouse
+    - clickhouse_server
   tasks:
     - name: stop ClickHouse by init.d
       shell: /etc/init.d/{{ clickhouse_server_name }} stop
