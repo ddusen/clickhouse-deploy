@@ -21,7 +21,10 @@
   when: not zookeeper_server_pkg_data.stat.exists
 
 - name: unarchive zookeeper pkg
-  unarchive: src="{{ zookeeper_root_dir }}/{{ zookeeper_server_pkg }}" dest="{{ zookeeper_root_dir }}/"
+  unarchive: 
+    src: "{{ zookeeper_root_dir }}/{{ zookeeper_server_pkg }}" 
+    dest: "{{ zookeeper_root_dir }}/"
+    remote_src: yes
   when: not zookeeper_server_bin_data.stat.exists
 
 - name: create zookeeper myid file.
