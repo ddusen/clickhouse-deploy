@@ -24,12 +24,12 @@
 
 - hosts: zookeeper_servers
   tags:
-    - zookeeper
+    - zookeeper_server
   tasks:
-    - name: update zookeeper configuration file.
+    - name: update zookeeper server configuration file.
       template: src="roles/zookeeper/templates/zoo.cfg.j2" dest="{{ zookeeper_conf_dir }}/zoo.cfg" mode=0644
 
-    - name: update zookeeper log4j configuration file.
+    - name: update zookeeper server log4j configuration file.
       template: src="roles/zookeeper/templates/log4j.properties.j2" dest="{{ zookeeper_conf_dir }}/log4j.properties" mode=0644
 
     - name: restart zookeeper server

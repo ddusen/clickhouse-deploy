@@ -29,10 +29,10 @@
   roles:
     - check_config_zookeeper
 
-# deploying zookeeper cluster
-- name: deploying zookeeper cluster
+# deploying zookeeper server cluster
+- name: deploying zookeeper server cluster
   hosts: zookeeper_servers
   tags:
-    - zookeeper
+    - zookeeper_server
   roles:
-    - zookeeper
+    - zookeeper_server

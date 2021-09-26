@@ -22,10 +22,10 @@
   roles:
     - check_config_static
 
-- name: starting zookeeper cluster
+- name: starting zookeeper server cluster
   hosts: zookeeper_servers
   tags:
-    - zookeeper
+    - zookeeper_server
   tasks:
     - name: stop zookeeper server first
       shell: "{{ zookeeper_bin_dir }}/zkServer.sh stop"
