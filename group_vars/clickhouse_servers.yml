@@ -5,8 +5,9 @@ clickhouse_server_name: "clickhouse-server"
 clickhouse_http_port: 8123
 clickhouse_tcp_port: 9000
 clickhouse_ihttp_port: 9009
-
 clickhouse_host: "0.0.0.0"
+# 会话超时时间
+clickhouse_session_timeout: 180
 
 clickhouse_root_dir: "/data"
 clickhouse_data_dir: "/data/clickhouse"

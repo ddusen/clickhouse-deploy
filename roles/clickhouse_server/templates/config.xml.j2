@@ -221,7 +221,7 @@
     <max_session_timeout>3600</max_session_timeout>
 
     <!-- Default session timeout, in seconds. Default: 60. -->
-    <default_session_timeout>300</default_session_timeout>
+    <default_session_timeout>{{ clickhouse_session_timeout }}</default_session_timeout>
 
     <remote_servers incl="clickhouse_remote_servers" />
     <zookeeper incl="zookeeper_servers" optional="true" />
