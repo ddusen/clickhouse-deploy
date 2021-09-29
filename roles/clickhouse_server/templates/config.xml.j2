@@ -218,10 +218,10 @@
     <builtin_dictionaries_reload_interval>3600</builtin_dictionaries_reload_interval>
 
     <!-- Maximum session timeout, in seconds. Default: 3600. -->
-    <max_session_timeout>{{ clickhouse_session_timeout }}</max_session_timeout>
+    <max_session_timeout>3600</max_session_timeout>
 
     <!-- Default session timeout, in seconds. Default: 60. -->
-    <default_session_timeout>{{ clickhouse_session_timeout }}</default_session_timeout>
+    <default_session_timeout>300</default_session_timeout>
 
     <remote_servers incl="clickhouse_remote_servers" />
     <zookeeper incl="zookeeper_servers" optional="true" />

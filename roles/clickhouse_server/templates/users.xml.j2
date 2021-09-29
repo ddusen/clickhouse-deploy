@@ -3,13 +3,13 @@
   <profiles>
     <default>
       <max_memory_usage>{{ clickhouse_max_mem_size }}</max_memory_usage>
-      <max_partitions_per_insert_block>0</max_partitions_per_insert_block>
       <load_balancing>random</load_balancing>
     </default>
 
     <readwrite>
       <max_memory_usage>{{ clickhouse_max_mem_size }}</max_memory_usage>
       <max_partitions_per_insert_block>0</max_partitions_per_insert_block>
+      <max_execution_time>180</max_execution_time>
       <load_balancing>random</load_balancing>
     </readwrite>
   </profiles>
